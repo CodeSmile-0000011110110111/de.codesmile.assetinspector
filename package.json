@@ -1,0 +1,20 @@
+{
+  "name": "de.codesmile.editor.assetinspector",
+  "displayName": "CodeSmile Asset Inspector",
+  "description": "Provides detailed information about a selected asset file.",
+  "version": "1.0.0",
+  "unity": "2021.3",
+  "unityRelease": "3f1",
+  "author": {
+    "name": "Steffen Itterheim aka 'CodeSmile' (Unity MVP, Self-Employed)",
+    "email": "steffen@steffenitterheim.de",
+    "url": "https://codesmile.de"
+  },
+  "changelogUrl": "https://codesmile.de",
+  "documentationUrl": "https://codesmile.de",
+  "licensesUrl": "https://codesmile.de",
+  "dependencies": {
+    "de.codesmile.editor.assetdatabase": "1.0.0"
+  },
+  "relatedPackages": {}
+}
