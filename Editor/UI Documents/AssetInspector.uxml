@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/de.codesmile.editor.assetinspector/Editor/UI%20Documents/AssetInspector.uss?fileID=7433441132597879392&amp;guid=a4d5a907f0bfa7946ad8381e69965a30&amp;type=3#AssetInspector" />
+    <ui:ScrollView>
+        <ui:TextField label="Name" placeholder-text="filler text" name="AssetName" />
+        <ui:TextField label="Type" placeholder-text="filler text" name="AssetType" />
+        <ui:TextField label="Path" placeholder-text="filler text" name="AssetPath" />
+        <ui:TextField label="GUID" placeholder-text="filler text" name="AssetGuid" />
+        <ui:TextField label="Instance ID" placeholder-text="filler text" name="AssetInstanceId" />
+        <ui:TextField label="Labels" placeholder-text="filler text" name="AssetLabels" />
+        <ui:VisualElement name="AssetIconImage" style="flex-grow: 1; align-self: center; max-width: 256px; max-height: 256px; min-width: 8px; min-height: 8px; flex-shrink: 1; align-content: auto;" />
+        <ui:TextField label="Icon" placeholder-text="filler text" name="AssetIcon" />
+        <ui:Foldout text="Icon Image" style="flex-grow: 1;" />
+    </ui:ScrollView>
+</ui:UXML>
