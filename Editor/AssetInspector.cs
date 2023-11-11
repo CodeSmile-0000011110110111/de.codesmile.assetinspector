@@ -4,15 +4,19 @@
 using CodeSmile.Editor;
 using System;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Object = UnityEngine.Object;
 
 public class AssetInspector : EditorWindow
 {
 	[SerializeField] private VisualTreeAsset m_VisualTreeAsset;
 
 	private VisualElement m_Document;
+
+	private AssetTypeBaseClasses m_AssetTypeBaseClasses;
+	private AssetLabels m_AssetLabels;
+	private AssetDependencies m_Dependencies;
 
 	[MenuItem("CodeSmile/Asset Inspector")]
 	public static void ShowAssetInspector()
@@ -21,70 +25,200 @@ public class AssetInspector : EditorWindow
 		window.titleContent = new GUIContent("Asset Inspector");
 	}
 
-	private void OnEnable()
+	private static Asset GetAssetFromSelection()
 	{
-		Debug.Log("enable");
-		Selection.selectionChanged += OnSelectionChanged;
-	}
+		Asset asset = null;
 
-	private void OnDisable()
-	{
-		Debug.Log("disable");
-		Selection.selectionChanged -= OnSelectionChanged;
+		var active = Selection.activeObject;
+		if (Asset.IsImported(active))
+			asset = new Asset(active);
+
+		return asset;
 	}
 
 	public void CreateGUI()
 	{
 		m_Document = m_VisualTreeAsset.Instantiate();
 		rootVisualElement.Add(m_Document);
+
+		RegisterEvents(true);
 	}
 
-	private void OnSelectionChanged() => UpdateGui(Selection.activeObject);
+	private void OnEnable() => Selection.selectionChanged += OnSelectionChanged;
 
-	private void UpdateGui(Object active)
+	private void OnDisable()
 	{
-		Asset asset = null;
-		if (Asset.Exists(active))
-			asset = new Asset(active);
+		Selection.selectionChanged -= OnSelectionChanged;
 
-		UpdateName(active, asset);
-		UpdateType(active, asset);
-		UpdatePath(active, asset);
-		UpdateGuid(active, asset);
-		UpdateInstanceId(active, asset);
-		//UpdateLabels(active, asset);
-		UpdateIcon(active, asset);
+		RegisterEvents(false);
 	}
 
-	private void UpdateName(Object active, Asset asset) =>
-		Find<TextField>("AssetName").value = active != null ? active.name : "<no selection>";
+	private void UpdateGui()
+	{
+		var asset = GetAssetFromSelection();
 
-	private void UpdateType(Object active, Asset asset) =>
-		Find<TextField>("AssetType").value = asset != null ? asset.Type.FullName : String.Empty;
+		UpdateName(asset);
+		// rename button
 
-	private void UpdatePath(Object active, Asset asset) =>
+		// Type Details
+		UpdateType(asset);
+		UpdateNamespace(asset);
+		UpdateFullyQualifiedName(asset);
+		UpdateInheritsFrom(asset);
+
+		// File Details
+		UpdateFile(asset);
+		UpdateFolder(asset);
+		UpdatePath(asset);
+		UpdateFullPath(asset);
+
+		// Identity
+		UpdateGuid(asset);
+		UpdateInstanceId(asset);
+		UpdateLocalFileId(asset);
+
+		// Status flags
+		UpdateStatus(asset);
+
+		// Labels
+		UpdateLabels(asset);
+
+		// Dependencies
+		UpdateDependencies(asset);
+
+		// Icon Details
+		UpdateIcon(asset);
+		UpdateIconPath(asset);
+		UpdateIconImage(asset);
+	}
+
+	private void RegisterEvents(Boolean register)
+	{
+		var openFile = Find<TextField>("AssetFile").Q<Button>();
+		var openFolder = Find<TextField>("AssetFolder").Q<Button>();
+		var inheritanceList = Find<ListView>("AssetInheritsFrom");
+		var labelsList = Find<ListView>("AssetLabels");
+		var dependenciesList = Find<ListView>("AssetDependencies");
+
+		if (register)
+		{
+			openFile.clicked += () => OnOpenFileClicked();
+			openFolder.clicked += () => OnOpenFolderClicked();
+			inheritanceList.makeItem += MakeListViewItem();
+			labelsList.makeItem += MakeListViewItem();
+			dependenciesList.makeItem += MakeListViewItem();
+		}
+		else
+		{
+			openFile.clicked -= () => OnOpenFileClicked();
+			openFolder.clicked -= () => OnOpenFolderClicked();
+			inheritanceList.makeItem -= MakeListViewItem();
+			labelsList.makeItem -= MakeListViewItem();
+			dependenciesList.makeItem -= MakeListViewItem();
+		}
+	}
+
+	private void OnOpenFileClicked() => GetAssetFromSelection()?.OpenInDefaultApplication();
+
+	private void OnOpenFolderClicked() => GetAssetFromSelection()?.AssetPath?.OpenFolder();
+
+	private void OnSelectionChanged() => UpdateGui();
+
+	private void UpdateName(Asset asset) =>
+		Find<TextField>("AssetName").value = asset != null ? asset.MainObject.name : "<no selection>";
+
+	private void UpdateType(Asset asset) => Find<TextField>("AssetType").value =
+		asset != null ? Asset.MainType(asset.AssetPath).Name : String.Empty;
+
+	private void UpdateNamespace(Asset asset) => Find<TextField>("AssetNamespace").value =
+		asset != null ? Asset.MainType(asset.AssetPath).Namespace : String.Empty;
+
+	private void UpdateFullyQualifiedName(Asset asset) => Find<TextField>("AssetAssemblyQualifiedName").value =
+		asset != null ? Asset.MainType(asset.AssetPath).AssemblyQualifiedName : String.Empty;
+
+	private void UpdateInheritsFrom(Asset asset)
+	{
+		m_AssetTypeBaseClasses = CreateInstance<AssetTypeBaseClasses>().Init(asset);
+
+		var list = Find<ListView>("AssetInheritsFrom");
+		list.bindingPath = nameof(m_AssetTypeBaseClasses.BaseClasses);
+		list.Bind(new SerializedObject(m_AssetTypeBaseClasses));
+	}
+
+	private void UpdateFile(Asset asset)
+	{
+		var file = Find<TextField>("AssetFile");
+		file.value = asset != null ? asset.AssetPath.FileName : String.Empty;
+	}
+
+	private void UpdateFolder(Asset asset)
+	{
+		var folder = Find<TextField>("AssetFolder");
+		folder.value = asset != null ? asset.AssetPath.FolderPath : String.Empty;
+	}
+
+	private void UpdatePath(Asset asset) =>
 		Find<TextField>("AssetPath").value = asset != null ? asset.AssetPath : String.Empty;
 
-	private void UpdateGuid(Object active, Asset asset) =>
+	private void UpdateFullPath(Asset asset) => Find<TextField>("AssetFullPath").value =
+		asset != null ? asset.AssetPath.FullPath : String.Empty;
+
+	private void UpdateGuid(Asset asset) =>
 		Find<TextField>("AssetGuid").value = asset != null ? asset.Guid.ToString() : String.Empty;
 
-	private void UpdateInstanceId(Object active, Asset asset) => Find<TextField>("AssetInstanceId").value =
+	private void UpdateInstanceId(Asset asset) => Find<TextField>("AssetInstanceId").value =
 		asset != null ? asset.MainObject.GetInstanceID().ToString() : String.Empty;
 
-	private void UpdateLabels(Object active, Asset asset) =>
-		Find<TextField>("AssetLabels").value = asset != null ? asset.AssetPath : String.Empty;
+	private void UpdateLocalFileId(Asset asset) => Find<TextField>("AssetLocalFileId").value =
+		asset != null ? asset.LocalFileId.ToString() : String.Empty;
 
-	private void UpdateIcon(Object active, Asset asset)
+	private void UpdateStatus(Asset asset)
+	{
+		var group = Find<Foldout>("AssetStatus");
+		var imported = Find<Toggle>("AssetImported", group);
+		imported.value = asset != null ? Asset.IsImported(asset) : false;
+		var loaded = Find<Toggle>("AssetLoaded", group);
+		loaded.value = asset != null ? Asset.IsLoaded(asset) : false;
+		var main = Find<Toggle>("MainAsset", group);
+		main.value = asset != null ? Asset.IsMain(asset) : false;
+		var sub = Find<Toggle>("SubAsset", group);
+		sub.value = asset != null ? Asset.IsSub(asset) : false;
+		var native = Find<Toggle>("NativeAsset", group);
+		native.value = asset != null ? Asset.IsNative(asset) : false;
+		var foreign = Find<Toggle>("ForeignAsset", group);
+		foreign.value = asset != null ? Asset.IsForeign(asset) : false;
+	}
+
+	private void UpdateLabels(Asset asset)
+	{
+		m_AssetLabels = CreateInstance<AssetLabels>().Init(asset);
+
+		var list = Find<ListView>("AssetLabels");
+		list.bindingPath = nameof(m_AssetLabels.Labels);
+		list.Bind(new SerializedObject(m_AssetLabels));
+	}
+
+	private void UpdateDependencies(Asset asset)
+	{
+		m_Dependencies = CreateInstance<AssetDependencies>().Init(asset);
+
+		var list = Find<ListView>("AssetDependencies");
+		list.bindingPath = nameof(m_Dependencies.Dependencies);
+		list.Bind(new SerializedObject(m_Dependencies));
+	}
+
+	private void UpdateIcon(Asset asset)
 	{
 		var field = Find<TextField>("AssetIcon");
-
-		var iconAsset = (Asset)asset.Icon;
-
 		field.value = asset != null && asset.Icon != null
-			? $"{asset.Icon.name} {iconAsset.AssetPath.FileName} ({asset.Icon.width}x{asset.Icon.height})"
+			? $"{asset.Icon.name} ({asset.Icon.width}x{asset.Icon.height})"
 			: String.Empty;
+	}
 
-		UpdateIconImage(asset);
+	private void UpdateIconPath(Asset asset)
+	{
+		var field = Find<TextField>("AssetIconPath");
+		field.value = asset != null && asset.Icon != null ? $"{Asset.Path.Get(asset.Icon)}" : String.Empty;
 	}
 
 	private void UpdateIconImage(Asset asset)
@@ -106,5 +240,16 @@ public class AssetInspector : EditorWindow
 		}
 	}
 
-	private T Find<T>(String name) where T : VisualElement => m_Document.Q<T>(name);
+	private Func<VisualElement> MakeListViewItem() => () =>
+	{
+		var label = new Label();
+		label.style.fontSize = 12f;
+		label.style.flexShrink = new StyleFloat(StyleKeyword.Auto);
+		label.style.paddingLeft = new StyleLength(18f);
+		label.style.color = new StyleColor(new Color(.8f, .8f, .667f));
+		return label;
+	};
+
+	private T Find<T>(String name, VisualElement element = null) where T : VisualElement =>
+		element == null ? m_Document.Q<T>(name) : element.Q<T>(name);
 }

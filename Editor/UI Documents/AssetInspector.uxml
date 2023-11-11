@@ -1,14 +1,54 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Packages/de.codesmile.editor.assetinspector/Editor/UI%20Documents/AssetInspector.uss?fileID=7433441132597879392&amp;guid=a4d5a907f0bfa7946ad8381e69965a30&amp;type=3#AssetInspector" />
     <ui:ScrollView>
-        <ui:TextField label="Name" placeholder-text="filler text" name="AssetName" />
-        <ui:TextField label="Type" placeholder-text="filler text" name="AssetType" />
-        <ui:TextField label="Path" placeholder-text="filler text" name="AssetPath" />
-        <ui:TextField label="GUID" placeholder-text="filler text" name="AssetGuid" />
-        <ui:TextField label="Instance ID" placeholder-text="filler text" name="AssetInstanceId" />
-        <ui:TextField label="Labels" placeholder-text="filler text" name="AssetLabels" />
-        <ui:VisualElement name="AssetIconImage" style="flex-grow: 1; align-self: center; max-width: 256px; max-height: 256px; min-width: 8px; min-height: 8px; flex-shrink: 1; align-content: auto;" />
-        <ui:TextField label="Icon" placeholder-text="filler text" name="AssetIcon" />
-        <ui:Foldout text="Icon Image" style="flex-grow: 1;" />
+        <ui:TextField label="Name" name="AssetName" readonly="true" />
+        <ui:Foldout text="Type Details" name="AssetTypeDetails">
+            <ui:TextField label="Type" name="AssetType" focusable="true" readonly="true" />
+            <ui:TextField label="Namespace" name="AssetNamespace" focusable="true" readonly="true" />
+            <ui:TextField label="Qualified Name" name="AssetAssemblyQualifiedName" focusable="true" readonly="true" />
+            <ui:ListView header-title="Base Classes" name="AssetInheritsFrom" show-foldout-header="true" show-bound-collection-size="false" allow-add="false" allow-remove="false" fixed-item-height="17" focusable="false" style="flex-grow: 1;" />
+        </ui:Foldout>
+        <ui:Foldout text="File Details" name="AssetFileDetails">
+            <ui:TextField label="File" readonly="true" name="AssetFile">
+                <ui:Button text="Open" style="font-size: 10px;" />
+            </ui:TextField>
+            <ui:TextField label="Folder" readonly="true" name="AssetFolder">
+                <ui:Button text="Open" style="font-size: 10px;" />
+            </ui:TextField>
+            <ui:TextField label="Relative Path" name="AssetPath" readonly="true" />
+            <ui:TextField label="Full Path" name="AssetFullPath" readonly="true" />
+        </ui:Foldout>
+        <ui:Foldout text="Identity" name="AssetIdentity">
+            <ui:TextField label="GUID" name="AssetGuid" readonly="true" />
+            <ui:TextField label="Local File ID" name="AssetLocalFileId" readonly="true" />
+            <ui:TextField label="Instance ID" name="AssetInstanceId" readonly="true" />
+        </ui:Foldout>
+        <ui:Foldout text="Status" name="AssetStatus">
+            <ui:GroupBox style="flex-direction: column;">
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
+                    <ui:Toggle label="Loaded" name="AssetLoaded" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Imported" name="AssetImported" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; justify-content: space-between; flex-direction: row;">
+                    <ui:Toggle label="MainAsset" name="MainAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold; min-width: auto; min-height: auto;" />
+                    <ui:Toggle label="SubAsset" name="SubAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold; min-height: auto; min-width: auto;" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; min-width: auto; min-height: auto;">
+                    <ui:Toggle label="NativeAsset" name="NativeAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="ForeignAsset" name="ForeignAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
+                </ui:VisualElement>
+            </ui:GroupBox>
+        </ui:Foldout>
+        <ui:ListView name="AssetLabelsList" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" show-bound-collection-size="false" header-title="Labels" />
+        <ui:Foldout text="Dependencies" name="AssetDependencies" focusable="false">
+            <ui:ListView name="AssetDependenciesList" />
+        </ui:Foldout>
+        <ui:Foldout text="Icon Details" name="AssetIconDetails">
+            <ui:TextField label="Icon" name="AssetIcon" />
+            <ui:TextField label="Icon Path" name="AssetIconPath" />
+            <ui:Foldout text="Image" name="IconImage" style="flex-grow: 1;">
+                <ui:VisualElement name="AssetIconImage" style="flex-grow: 1; max-width: 512px; max-height: 512px; width: auto; height: auto; flex-direction: column; flex-wrap: nowrap; min-width: 16px; min-height: 16px;" />
+            </ui:Foldout>
+        </ui:Foldout>
     </ui:ScrollView>
 </ui:UXML>
