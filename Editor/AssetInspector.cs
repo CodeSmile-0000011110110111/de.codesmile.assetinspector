@@ -25,6 +25,7 @@ public class AssetInspector : EditorWindow
 		window.titleContent = new GUIContent("Asset Inspector");
 	}
 
+
 	private static Asset GetAssetFromSelection()
 	{
 		Asset asset = null;
