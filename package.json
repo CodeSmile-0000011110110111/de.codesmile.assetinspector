@@ -14,7 +14,7 @@
   "documentationUrl": "https://codesmile.de",
   "licensesUrl": "https://codesmile.de",
   "dependencies": {
-    "de.codesmile.editor.assetdatabase": "1.1.2"
+    "de.codesmile.editor.assetdatabase": "1.1.3"
   },
   "relatedPackages": {}
 }
