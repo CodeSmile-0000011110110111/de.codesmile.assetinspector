@@ -1,0 +1,18 @@
+﻿// Copyright (C) 2021-2023 Steffen Itterheim
+// Refer to included LICENSE file for terms and conditions.
+
+using UnityEngine;
+
+namespace CodeSmile.Editor.Bindings
+{
+	internal class AssetVisibleSubObjects : ScriptableObject
+	{
+		public Object[] Objects;
+
+		public AssetVisibleSubObjects Init(Asset asset)
+		{
+			Objects = asset != null ? asset.VisibleSubObjects : new Object[0];
+			return this;
+		}
+	}
+}

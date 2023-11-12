@@ -6,7 +6,7 @@
             <ui:TextField label="Type" name="AssetType" focusable="true" readonly="true" />
             <ui:TextField label="Namespace" name="AssetNamespace" focusable="true" readonly="true" />
             <ui:TextField label="Qualified Name" name="AssetAssemblyQualifiedName" focusable="true" readonly="true" />
-            <ui:ListView header-title="Base Classes" name="AssetInheritsFrom" show-foldout-header="true" show-bound-collection-size="false" allow-add="false" allow-remove="false" fixed-item-height="17" focusable="false" style="flex-grow: 1;" />
+            <ui:ListView header-title="Base Classes" name="AssetInheritsFrom" show-foldout-header="true" allow-add="false" allow-remove="false" fixed-item-height="17" focusable="false" style="flex-grow: 1;" />
         </ui:Foldout>
         <ui:Foldout text="File Details" name="AssetFileDetails">
             <ui:TextField label="File" readonly="true" name="AssetFile">
@@ -39,9 +39,10 @@
                 </ui:VisualElement>
             </ui:GroupBox>
         </ui:Foldout>
-        <ui:ListView name="AssetSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" show-bound-collection-size="false" header-title="Sub Assets" />
-        <ui:ListView name="AssetLabels" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" show-bound-collection-size="false" header-title="Labels" />
-        <ui:ListView name="AssetDependencies" focusable="false" show-foldout-header="true" header-title="Dependencies" allow-add="false" allow-remove="false" show-bound-collection-size="false" fixed-item-height="17" />
+        <ui:ListView name="AssetSubObjects" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Sub Objects" />
+        <ui:ListView name="AssetVisibleSubObjects" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Visible Sub Objects" />
+        <ui:ListView name="AssetLabels" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Labels" />
+        <ui:ListView name="AssetDependencies" focusable="false" show-foldout-header="true" header-title="Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" />
         <ui:Foldout text="Icon Details" name="AssetIconDetails">
             <ui:TextField label="Icon" name="AssetIcon" />
             <ui:TextField label="Icon Path" name="AssetIconPath" />
