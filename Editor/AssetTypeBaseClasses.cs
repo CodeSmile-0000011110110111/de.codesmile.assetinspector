@@ -14,8 +14,8 @@ internal class AssetTypeBaseClasses : ScriptableObject
 	public AssetTypeBaseClasses Init(Asset asset)
 	{
 		BaseClasses = new List<String>();
-		if (asset != null && asset.Type != null)
-			AddBaseClassRecursive(asset.Type);
+		if (asset != null && asset.MainType != null)
+			AddBaseClassRecursive(asset.MainType);
 
 		return this;
 	}

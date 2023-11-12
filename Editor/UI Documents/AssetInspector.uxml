@@ -39,6 +39,7 @@
                 </ui:VisualElement>
             </ui:GroupBox>
         </ui:Foldout>
+        <ui:ListView name="AssetSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" show-bound-collection-size="false" header-title="Sub Assets" />
         <ui:ListView name="AssetLabels" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" show-bound-collection-size="false" header-title="Labels" />
         <ui:ListView name="AssetDependencies" focusable="false" show-foldout-header="true" header-title="Dependencies" allow-add="false" allow-remove="false" show-bound-collection-size="false" fixed-item-height="17" />
         <ui:Foldout text="Icon Details" name="AssetIconDetails">

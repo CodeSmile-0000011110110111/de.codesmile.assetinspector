@@ -25,7 +25,6 @@ public class AssetInspector : EditorWindow
 		window.titleContent = new GUIContent("Asset Inspector");
 	}
 
-
 	private static Asset GetAssetFromSelection()
 	{
 		Asset asset = null;
@@ -129,13 +128,13 @@ public class AssetInspector : EditorWindow
 		Find<TextField>("AssetName").value = asset != null ? asset.MainObject.name : "<no selection>";
 
 	private void UpdateType(Asset asset) => Find<TextField>("AssetType").value =
-		asset != null ? Asset.MainType(asset.AssetPath).Name : String.Empty;
+		asset != null ? Asset.GetMainType(asset.AssetPath).Name : String.Empty;
 
 	private void UpdateNamespace(Asset asset) => Find<TextField>("AssetNamespace").value =
-		asset != null ? Asset.MainType(asset.AssetPath).Namespace : String.Empty;
+		asset != null ? Asset.GetMainType(asset.AssetPath).Namespace : String.Empty;
 
 	private void UpdateFullyQualifiedName(Asset asset) => Find<TextField>("AssetAssemblyQualifiedName").value =
-		asset != null ? Asset.MainType(asset.AssetPath).AssemblyQualifiedName : String.Empty;
+		asset != null ? Asset.GetMainType(asset.AssetPath).AssemblyQualifiedName : String.Empty;
 
 	private void UpdateInheritsFrom(Asset asset)
 	{
