@@ -37,6 +37,9 @@
                     <ui:Toggle label="NativeAsset" name="NativeAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
                     <ui:Toggle label="ForeignAsset" name="ForeignAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
                 </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; min-width: auto; min-height: auto;">
+                    <ui:Toggle label="CanOpenInEditor" name="CanOpenAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
+                </ui:VisualElement>
             </ui:GroupBox>
         </ui:Foldout>
         <ui:ListView name="AssetSubObjects" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Sub Objects" />

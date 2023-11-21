@@ -11,7 +11,7 @@ namespace CodeSmile.Editor.Bindings
 
 		public AssetVisibleSubObjects Init(Asset asset)
 		{
-			Objects = asset != null ? asset.VisibleSubObjects : new Object[0];
+			Objects = asset != null ? asset.VisibleSubAssets : new Object[0];
 			return this;
 		}
 	}

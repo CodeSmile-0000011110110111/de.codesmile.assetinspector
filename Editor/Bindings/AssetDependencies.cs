@@ -12,7 +12,7 @@ namespace CodeSmile.Editor.Bindings
 
 		public AssetDependencies Init(Asset asset)
 		{
-			Dependencies = asset != null ? asset.Dependencies : new String[0];
+			Dependencies = asset != null ? asset.DirectDependencies : new String[0];
 			return this;
 		}
 	}

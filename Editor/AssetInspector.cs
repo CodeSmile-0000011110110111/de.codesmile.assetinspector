@@ -22,7 +22,7 @@ namespace CodeSmile.Editor
 		private AssetSubObjects m_SubObjects;
 		private AssetVisibleSubObjects m_VisibleSubObjects;
 
-		[MenuItem("CodeSmile/Asset Inspector")]
+		[MenuItem("Window/CodeSmile/Asset Inspector", priority = 2999)]
 		public static void ShowAssetInspector()
 		{
 			var window = GetWindow<AssetInspector>();
@@ -127,7 +127,7 @@ namespace CodeSmile.Editor
 			}
 		}
 
-		private void OnOpenFileClicked() => GetAssetFromSelection()?.OpenInDefaultApplication();
+		private void OnOpenFileClicked() => GetAssetFromSelection()?.Open();
 
 		private void OnOpenFolderClicked() => GetAssetFromSelection()?.AssetPath?.OpenFolder();
 
@@ -196,6 +196,9 @@ namespace CodeSmile.Editor
 			native.value = asset != null ? Asset.IsNative(asset) : false;
 			var foreign = Find<Toggle>("ForeignAsset", group);
 			foreign.value = asset != null ? Asset.IsForeign(asset) : false;
+
+			var canOpen = Find<Toggle>("CanOpenAsset", group);
+			canOpen.value = asset != null ? asset.CanOpenInEditor() : false;
 		}
 
 		private void UpdateAllObjects(Asset asset)
