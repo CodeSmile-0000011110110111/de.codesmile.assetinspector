@@ -81,7 +81,8 @@ namespace CodeSmile.Editor
 			var openFolder = Find<TextField>("AssetFolder").Q<Button>();
 			var inheritanceList = Find<ListView>("AssetInheritsFrom");
 			var labelsList = Find<ListView>("AssetLabels");
-			var dependenciesList = Find<ListView>("AssetDependencies");
+			var directDependenciesList = Find<ListView>("AssetDirectDependencies");
+			var allDependenciesList = Find<ListView>("AssetAllDependencies");
 			var allObjectsList = Find<ListView>("AllSubAssets");
 			var visibleObjectsList = Find<ListView>("VisibleSubAssets");
 
@@ -91,7 +92,8 @@ namespace CodeSmile.Editor
 				openFolder.clicked += () => OnOpenFolderClicked();
 				inheritanceList.makeItem += MakeListViewStringItem();
 				labelsList.makeItem += MakeListViewStringItem();
-				dependenciesList.makeItem += MakeListViewStringItem();
+				directDependenciesList.makeItem += MakeListViewStringItem();
+				allDependenciesList.makeItem += MakeListViewStringItem();
 				allObjectsList.makeItem += MakeListViewObjectItem();
 				visibleObjectsList.makeItem += MakeListViewObjectItem();
 			}
@@ -101,7 +103,8 @@ namespace CodeSmile.Editor
 				openFolder.clicked -= () => OnOpenFolderClicked();
 				inheritanceList.makeItem -= MakeListViewStringItem();
 				labelsList.makeItem -= MakeListViewStringItem();
-				dependenciesList.makeItem -= MakeListViewStringItem();
+				directDependenciesList.makeItem -= MakeListViewStringItem();
+				allDependenciesList.makeItem -= MakeListViewStringItem();
 				allObjectsList.makeItem -= MakeListViewObjectItem();
 				visibleObjectsList.makeItem -= MakeListViewObjectItem();
 			}
@@ -193,9 +196,16 @@ namespace CodeSmile.Editor
 		{
 			m_Dependencies = CreateInstance<AssetDependencies>().Init(asset);
 
-			var list = Find<ListView>("AssetDependencies");
-			list.bindingPath = nameof(m_Dependencies.Dependencies);
-			list.Bind(new SerializedObject(m_Dependencies));
+			{
+				var list = Find<ListView>("AssetDirectDependencies");
+				list.bindingPath = nameof(m_Dependencies.DirectDependencies);
+				list.Bind(new SerializedObject(m_Dependencies));
+			}
+			{
+				var list = Find<ListView>("AssetAllDependencies");
+				list.bindingPath = nameof(m_Dependencies.AllDependencies);
+				list.Bind(new SerializedObject(m_Dependencies));
+			}
 		}
 
 		private void UpdateIconDetails(Asset asset)

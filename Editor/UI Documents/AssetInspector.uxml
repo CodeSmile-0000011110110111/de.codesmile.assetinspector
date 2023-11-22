@@ -45,10 +45,11 @@
                 </ui:VisualElement>
             </ui:GroupBox>
         </ui:Foldout>
-        <ui:ListView name="AllSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="All Sub Assets" />
-        <ui:ListView name="VisibleSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Visible Sub Assets" />
-        <ui:ListView name="AssetLabels" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Labels" />
-        <ui:ListView name="AssetDependencies" focusable="false" show-foldout-header="true" header-title="Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" />
+        <ui:ListView name="AllSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="All Sub Assets" style="margin-left: 3px;" />
+        <ui:ListView name="VisibleSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Visible Sub Assets" style="margin-left: 3px;" />
+        <ui:ListView name="AssetDirectDependencies" focusable="false" show-foldout-header="true" header-title="Direct Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" style="margin-left: 3px;" />
+        <ui:ListView name="AssetAllDependencies" focusable="false" show-foldout-header="true" header-title="All Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" style="margin-left: 3px;" />
+        <ui:ListView name="AssetLabels" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Labels" style="margin-left: 3px;" />
         <ui:Foldout text="Icon Details" name="AssetIconDetails">
             <ui:TextField label="Icon" name="AssetIcon" />
             <ui:TextField label="Icon Path" name="AssetIconPath" />

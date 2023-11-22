@@ -8,11 +8,13 @@ namespace CodeSmile.Editor.Bindings
 {
 	internal class AssetDependencies : ScriptableObject
 	{
-		public String[] Dependencies;
+		public String[] AllDependencies;
+		public String[] DirectDependencies;
 
 		public AssetDependencies Init(Asset asset)
 		{
-			Dependencies = asset != null ? asset.DirectDependencies : new String[0];
+			AllDependencies = asset != null ? asset.Dependencies : new String[0];
+			DirectDependencies = asset != null ? asset.DirectDependencies : new String[0];
 			return this;
 		}
 	}
