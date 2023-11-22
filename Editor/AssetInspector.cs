@@ -7,7 +7,6 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Object = System.Object;
 
 namespace CodeSmile.Editor
 {
@@ -159,7 +158,8 @@ namespace CodeSmile.Editor
 
 		private void UpdateImporterDetails(Asset asset)
 		{
-			Find<TextField>("AssetDefaultImporter").value = asset != null ? asset.DefaultImporter.FullName : String.Empty;
+			Find<TextField>("AssetDefaultImporter").value =
+				asset != null ? asset.DefaultImporter.FullName : String.Empty;
 			Find<TextField>("AssetActiveImporter").value = asset != null ? asset.ActiveImporter.FullName : String.Empty;
 			Find<Toggle>("AssetImporterIsOverridden").value = asset != null ? asset.IsImporterOverridden : false;
 
@@ -172,7 +172,8 @@ namespace CodeSmile.Editor
 		private void UpdateBundleDetails(Asset asset)
 		{
 			Find<TextField>("AssetOwningBundle").value = asset != null ? asset.OwningBundle : String.Empty;
-			Find<TextField>("AssetOwningBundleVariant").value = asset != null ? asset.OwningBundleVariant : String.Empty;
+			Find<TextField>("AssetOwningBundleVariant").value =
+				asset != null ? asset.OwningBundleVariant : String.Empty;
 		}
 
 		private void UpdateStatus(Asset asset)
@@ -191,9 +192,12 @@ namespace CodeSmile.Editor
 		private void UpdateVersionControlStatus(Asset asset)
 		{
 			var group = Find<Foldout>("AssetVersionControlStatus");
-			Find<Toggle>("AssetIsEditable", group).value = asset != null ? Asset.VersionControl.IsEditable(asset) : false;
-			Find<Toggle>("AssetIsMetaEditable", group).value = asset != null ? Asset.VersionControl.IsMetaEditable(asset) : false;
-			Find<Toggle>("AssetCanMakeEditable", group).value = asset != null ? Asset.VersionControl.CanMakeEditable(asset) : false;
+			Find<Toggle>("AssetIsEditable", group).value =
+				asset != null ? Asset.VersionControl.IsEditable(asset) : false;
+			Find<Toggle>("AssetIsMetaEditable", group).value =
+				asset != null ? Asset.VersionControl.IsMetaEditable(asset) : false;
+			Find<Toggle>("AssetCanMakeEditable", group).value =
+				asset != null ? Asset.VersionControl.CanMakeEditable(asset) : false;
 		}
 
 		private void UpdateAllSubAssets(Asset asset)
