@@ -199,6 +199,8 @@ namespace CodeSmile.Editor
 
 			var canOpen = Find<Toggle>("CanOpenAsset", group);
 			canOpen.value = asset != null ? asset.CanOpenInEditor() : false;
+			var scene = Find<Toggle>("IsSceneAsset", group);
+			scene.value = asset != null ? asset.IsScene : false;
 		}
 
 		private void UpdateAllObjects(Asset asset)
@@ -256,19 +258,19 @@ namespace CodeSmile.Editor
 			var image = Find<VisualElement>("AssetIconImage");
 			if (asset != null && asset.Icon is Texture2D texture)
 			{
-				image.style.backgroundImage = new StyleBackground(texture);
 #if UNITY_2022_0_OR_NEWER
 				image.style.backgroundSize = new BackgroundSize(texture.width, texture.height);
 #endif
+				image.style.backgroundImage = new StyleBackground(texture);
 				image.style.width = new StyleLength(texture.width);
 				image.style.height = new StyleLength(texture.height);
 			}
 			else
 			{
-				image.style.backgroundImage = new StyleBackground(StyleKeyword.None);
 #if UNITY_2022_0_OR_NEWER
 				image.style.backgroundSize = new BackgroundSize(16, 16);
 #endif
+				image.style.backgroundImage = new StyleBackground(StyleKeyword.None);
 				image.style.width = new StyleLength(0f);
 				image.style.height = new StyleLength(0f);
 			}

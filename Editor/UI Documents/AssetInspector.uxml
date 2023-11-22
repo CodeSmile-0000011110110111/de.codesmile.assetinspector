@@ -26,8 +26,8 @@
         <ui:Foldout text="Status" name="AssetStatus">
             <ui:GroupBox style="flex-direction: column;">
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
-                    <ui:Toggle label="Loaded" name="AssetLoaded" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
-                    <ui:Toggle label="Imported" name="AssetImported" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Imported" name="AssetImported" focusable="false" tooltip="An asset is &apos;imported&apos; if it is contained in the AssetDatabase. Can be false for newly created assets if AssetDatabase auto-refresh is disabled." style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Loaded" name="AssetLoaded" focusable="false" tooltip="Tells you if the asset is currently loaded in memory." style="font-size: 11px; -unity-font-style: bold;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 1; justify-content: space-between; flex-direction: row;">
                     <ui:Toggle label="MainAsset" name="MainAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold; min-width: auto; min-height: auto;" />
@@ -38,7 +38,8 @@
                     <ui:Toggle label="ForeignAsset" name="ForeignAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; min-width: auto; min-height: auto;">
-                    <ui:Toggle label="CanOpenInEditor" name="CanOpenAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="SceneAsset" name="IsSceneAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Can open in Editor?" name="CanOpenAsset" focusable="false" tooltip="Is true if the Unity Editor can open (edit) files of this type." style="font-size: 11px; -unity-font-style: bold;" />
                 </ui:VisualElement>
             </ui:GroupBox>
         </ui:Foldout>
