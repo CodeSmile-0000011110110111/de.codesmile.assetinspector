@@ -158,10 +158,12 @@ namespace CodeSmile.Editor
 
 		private void UpdateImporterDetails(Asset asset)
 		{
+#if UNITY_2022_2_OR_NEWER
 			Find<TextField>("AssetDefaultImporter").value =
-				asset != null ? asset.DefaultImporter.FullName : String.Empty;
-			Find<TextField>("AssetActiveImporter").value = asset != null ? asset.ActiveImporter.FullName : String.Empty;
+				asset != null ? asset.DefaultImporter?.FullName : String.Empty;
+			Find<TextField>("AssetActiveImporter").value = asset != null ? asset.ActiveImporter?.FullName : String.Empty;
 			Find<Toggle>("AssetImporterIsOverridden").value = asset != null ? asset.IsImporterOverridden : false;
+#endif
 
 			m_Importers = CreateInstance<AssetImporters>().Init(asset);
 			var list = Find<ListView>("AssetAvailableImporters");
