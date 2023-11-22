@@ -15,8 +15,8 @@ namespace CodeSmile.Editor.Bindings
 		public AssetTypeBaseClasses Init(Asset asset)
 		{
 			BaseClasses = new List<String>();
-			if (asset != null && asset.MainType != null)
-				AddBaseClassRecursive(asset.MainType);
+			if (asset != null && asset.MainObjectType != null)
+				AddBaseClassRecursive(asset.MainObjectType);
 
 			return this;
 		}

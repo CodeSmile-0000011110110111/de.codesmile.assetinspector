@@ -127,7 +127,7 @@ namespace CodeSmile.Editor
 			}
 		}
 
-		private void OnOpenFileClicked() => GetAssetFromSelection()?.Open();
+		private void OnOpenFileClicked() => GetAssetFromSelection()?.OpenExternal();
 
 		private void OnOpenFolderClicked() => GetAssetFromSelection()?.AssetPath?.OpenFolder();
 
@@ -257,14 +257,18 @@ namespace CodeSmile.Editor
 			if (asset != null && asset.Icon is Texture2D texture)
 			{
 				image.style.backgroundImage = new StyleBackground(texture);
+#if UNITY_2022_0_OR_NEWER
 				image.style.backgroundSize = new BackgroundSize(texture.width, texture.height);
+#endif
 				image.style.width = new StyleLength(texture.width);
 				image.style.height = new StyleLength(texture.height);
 			}
 			else
 			{
 				image.style.backgroundImage = new StyleBackground(StyleKeyword.None);
+#if UNITY_2022_0_OR_NEWER
 				image.style.backgroundSize = new BackgroundSize(16, 16);
+#endif
 				image.style.width = new StyleLength(0f);
 				image.style.height = new StyleLength(0f);
 			}
