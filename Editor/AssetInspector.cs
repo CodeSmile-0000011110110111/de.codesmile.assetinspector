@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = System.Object;
 
 namespace CodeSmile.Editor
 {
@@ -21,6 +22,7 @@ namespace CodeSmile.Editor
 		private AssetDependencies m_Dependencies;
 		private AssetSubObjects m_SubObjects;
 		private AssetVisibleSubObjects m_VisibleSubObjects;
+		private AssetImporters m_Importers;
 
 		[MenuItem("Window/CodeSmile/Asset Inspector", priority = 2999)]
 		public static void ShowAssetInspector()
@@ -34,7 +36,7 @@ namespace CodeSmile.Editor
 			Asset asset = null;
 
 			var active = Selection.activeObject;
-			if (Asset.IsImported(active))
+			if (Asset.Status.IsImported(active))
 				asset = new Asset(active);
 
 			return asset;
@@ -65,7 +67,10 @@ namespace CodeSmile.Editor
 			UpdateTypeDetails(asset);
 			UpdateFileDetails(asset);
 			UpdateIdentity(asset);
+			UpdateImporterDetails(asset);
+			UpdateBundleDetails(asset);
 			UpdateStatus(asset);
+			UpdateVersionControlStatus(asset);
 
 			UpdateAllSubAssets(asset);
 			UpdateVisibleSubAssets(asset);
@@ -152,17 +157,43 @@ namespace CodeSmile.Editor
 			Find<TextField>("AssetLocalFileId").value = asset != null ? asset.LocalFileId.ToString() : String.Empty;
 		}
 
+		private void UpdateImporterDetails(Asset asset)
+		{
+			Find<TextField>("AssetDefaultImporter").value = asset != null ? asset.DefaultImporter.FullName : String.Empty;
+			Find<TextField>("AssetActiveImporter").value = asset != null ? asset.ActiveImporter.FullName : String.Empty;
+			Find<Toggle>("AssetImporterIsOverridden").value = asset != null ? asset.IsImporterOverridden : false;
+
+			m_Importers = CreateInstance<AssetImporters>().Init(asset);
+			var list = Find<ListView>("AssetAvailableImporters");
+			list.bindingPath = nameof(m_Importers.AvailableImporters);
+			list.Bind(new SerializedObject(m_Importers));
+		}
+
+		private void UpdateBundleDetails(Asset asset)
+		{
+			Find<TextField>("AssetOwningBundle").value = asset != null ? asset.OwningBundle : String.Empty;
+			Find<TextField>("AssetOwningBundleVariant").value = asset != null ? asset.OwningBundleVariant : String.Empty;
+		}
+
 		private void UpdateStatus(Asset asset)
 		{
 			var group = Find<Foldout>("AssetStatus");
-			Find<Toggle>("AssetImported", group).value = asset != null ? Asset.IsImported(asset) : false;
-			Find<Toggle>("AssetLoaded", group).value = asset != null ? Asset.IsLoaded(asset) : false;
-			Find<Toggle>("MainAsset", group).value = asset != null ? Asset.IsMain(asset) : false;
-			Find<Toggle>("SubAsset", group).value = asset != null ? Asset.IsSub(asset) : false;
-			Find<Toggle>("NativeAsset", group).value = asset != null ? Asset.IsNative(asset) : false;
-			Find<Toggle>("ForeignAsset", group).value = asset != null ? Asset.IsForeign(asset) : false;
+			Find<Toggle>("AssetImported", group).value = asset != null ? Asset.Status.IsImported(asset) : false;
+			Find<Toggle>("AssetLoaded", group).value = asset != null ? Asset.Status.IsLoaded(asset) : false;
+			Find<Toggle>("MainAsset", group).value = asset != null ? Asset.Status.IsMain(asset) : false;
+			Find<Toggle>("SubAsset", group).value = asset != null ? Asset.Status.IsSub(asset) : false;
+			Find<Toggle>("NativeAsset", group).value = asset != null ? Asset.Status.IsNative(asset) : false;
+			Find<Toggle>("ForeignAsset", group).value = asset != null ? Asset.Status.IsForeign(asset) : false;
 			Find<Toggle>("CanOpenAsset", group).value = asset != null ? asset.CanOpenInEditor() : false;
 			Find<Toggle>("IsSceneAsset", group).value = asset != null ? asset.IsScene : false;
+		}
+
+		private void UpdateVersionControlStatus(Asset asset)
+		{
+			var group = Find<Foldout>("AssetVersionControlStatus");
+			Find<Toggle>("AssetIsEditable", group).value = asset != null ? Asset.VersionControl.IsEditable(asset) : false;
+			Find<Toggle>("AssetIsMetaEditable", group).value = asset != null ? Asset.VersionControl.IsMetaEditable(asset) : false;
+			Find<Toggle>("AssetCanMakeEditable", group).value = asset != null ? Asset.VersionControl.CanMakeEditable(asset) : false;
 		}
 
 		private void UpdateAllSubAssets(Asset asset)

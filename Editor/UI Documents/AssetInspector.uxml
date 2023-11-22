@@ -25,6 +25,16 @@
             <ui:TextField label="Local File ID" name="AssetLocalFileId" readonly="true" />
             <ui:TextField label="Instance ID" name="AssetInstanceId" readonly="true" />
         </ui:Foldout>
+        <ui:Foldout text="Importer" name="AssetImporterDetails">
+            <ui:TextField label="Default Importer" name="AssetDefaultImporter" focusable="true" readonly="true" tooltip="The default AssetImporter type for this asset type." />
+            <ui:TextField label="Active Importer" name="AssetActiveImporter" focusable="true" readonly="true" tooltip="The active AssetImporter type for this asset type." />
+            <ui:Toggle label="IsOverridden" name="AssetImporterIsOverridden" tooltip="Shows whether the AssetImporter is overridden (not the default) for this asset." />
+            <ui:ListView header-title="Available Importers" name="AssetAvailableImporters" show-foldout-header="true" allow-add="false" allow-remove="false" fixed-item-height="17" focusable="false" tooltip="Lists all available importers for this asset type." style="flex-grow: 1;" />
+        </ui:Foldout>
+        <ui:Foldout text="Bundle" name="AssetBundleDetails">
+            <ui:TextField label="Owning Bundle" name="AssetOwningBundle" focusable="true" readonly="true" tooltip="Shows the Asset Bundle name that owns this asset." />
+            <ui:TextField label="Owning Bundle Variant" name="AssetOwningBundleVariant" focusable="true" readonly="true" tooltip="Shows the Asset Bundle variant name that owns this asset." />
+        </ui:Foldout>
         <ui:Foldout text="Status" name="AssetStatus">
             <ui:GroupBox style="flex-direction: column;">
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
@@ -42,6 +52,17 @@
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; min-width: auto; min-height: auto;">
                     <ui:Toggle label="SceneAsset" name="IsSceneAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
                     <ui:Toggle label="Can open in Editor?" name="CanOpenAsset" focusable="false" tooltip="Is true if the Unity Editor can open (edit) files of this type." style="font-size: 11px; -unity-font-style: bold;" />
+                </ui:VisualElement>
+            </ui:GroupBox>
+        </ui:Foldout>
+        <ui:Foldout text="Version Control" name="AssetVersionControl">
+            <ui:GroupBox style="flex-direction: column;">
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
+                    <ui:Toggle label="IsEditable" name="AssetIsEditable" focusable="false" tooltip="Is this asset file editable (&apos;open for edit&apos;) in version control?" style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="IsMetaEditable" name="AssetIsMetaEditable" focusable="false" tooltip="Is this asset&apos;s meta file editable (&apos;open for edit&apos;) in version control?" style="font-size: 11px; -unity-font-style: bold;" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; justify-content: space-between; flex-direction: row;">
+                    <ui:Toggle label="CanMakeEditable" name="AssetCanMakeEditable" focusable="false" tooltip="Can this asset be made editable (&apos;open for edit&apos;) in version control?" style="font-size: 11px; -unity-font-style: bold; min-width: auto; min-height: auto;" />
                 </ui:VisualElement>
             </ui:GroupBox>
         </ui:Foldout>
