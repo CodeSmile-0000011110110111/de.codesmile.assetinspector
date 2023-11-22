@@ -119,8 +119,11 @@ namespace CodeSmile.Editor
 		private void UpdateTypeDetails(Asset asset)
 		{
 			Find<TextField>("AssetType").value = asset != null ? Asset.GetMainType(asset.AssetPath).Name : String.Empty;
-			Find<TextField>("AssetNamespace").value = asset != null ? Asset.GetMainType(asset.AssetPath).Namespace : String.Empty;
-			Find<TextField>("AssetAssemblyQualifiedName").value = asset != null ? Asset.GetMainType(asset.AssetPath).AssemblyQualifiedName : String.Empty;
+			Find<TextField>("AssetNamespace").value =
+				asset != null ? Asset.GetMainType(asset.AssetPath).Namespace : String.Empty;
+			Find<TextField>("AssetAssemblyQualifiedName").value = asset != null
+				? Asset.GetMainType(asset.AssetPath).AssemblyQualifiedName
+				: String.Empty;
 
 			m_BaseClasses = CreateInstance<AssetTypeBaseClasses>().Init(asset);
 			var list = Find<ListView>("AssetInheritsFrom");
@@ -132,15 +135,17 @@ namespace CodeSmile.Editor
 		{
 			Find<TextField>("AssetFile").value = asset != null ? asset.AssetPath.FileName : String.Empty;
 			Find<TextField>("AssetFolder").value = asset != null ? asset.AssetPath.FolderPath : String.Empty;
-			Find<TextField>("AssetMetaPath").value = asset != null ? asset.MetaPath : String.Empty;
 			Find<TextField>("AssetPath").value = asset != null ? asset.AssetPath : String.Empty;
 			Find<TextField>("AssetFullPath").value = asset != null ? asset.AssetPath.FullPath : String.Empty;
+			Find<TextField>("AssetMetaPath").value = asset != null ? asset.MetaPath : String.Empty;
+			Find<TextField>("AssetMetaFullPath").value = asset != null ? asset.MetaPath.FullPath : String.Empty;
 		}
 
 		private void UpdateIdentity(Asset asset)
 		{
 			Find<TextField>("AssetGuid").value = asset != null ? asset.Guid.ToString() : String.Empty;
-			Find<TextField>("AssetInstanceId").value = asset != null ? asset.MainObject.GetInstanceID().ToString() : String.Empty;
+			Find<TextField>("AssetInstanceId").value =
+				asset != null ? asset.MainObject.GetInstanceID().ToString() : String.Empty;
 			Find<TextField>("AssetLocalFileId").value = asset != null ? asset.LocalFileId.ToString() : String.Empty;
 		}
 
@@ -195,9 +200,12 @@ namespace CodeSmile.Editor
 
 		private void UpdateIconDetails(Asset asset)
 		{
-			var assetIconName = asset != null && asset.Icon != null ? $"{asset.Icon.name} ({asset.Icon.width}x{asset.Icon.height})" : String.Empty;
+			var assetIconName = asset != null && asset.Icon != null
+				? $"{asset.Icon.name} ({asset.Icon.width}x{asset.Icon.height})"
+				: String.Empty;
 			Find<TextField>("AssetIcon").value = assetIconName;
-			Find<TextField>("AssetIconPath").value = asset != null && asset.Icon != null ? $"{Asset.Path.Get(asset.Icon)}" : String.Empty;
+			Find<TextField>("AssetIconPath").value =
+				asset != null && asset.Icon != null ? $"{Asset.Path.Get(asset.Icon)}" : String.Empty;
 
 			var image = Find<VisualElement>("AssetIconImage");
 			if (asset != null && asset.Icon is Texture2D texture)
