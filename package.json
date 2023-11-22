@@ -2,7 +2,7 @@
   "name": "de.codesmile.editor.assetinspector",
   "displayName": "CodeSmile Asset Inspector",
   "description": "Provides detailed information about a selected asset file.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "unity": "2021.3",
   "unityRelease": "3f1",
   "author": {
@@ -14,7 +14,7 @@
   "documentationUrl": "https://codesmile.de",
   "licensesUrl": "https://codesmile.de",
   "dependencies": {
-    "de.codesmile.editor.assetdatabase": "1.2.0"
+    "de.codesmile.editor.assetdatabase": "1.2.1"
   },
   "relatedPackages": {}
 }
