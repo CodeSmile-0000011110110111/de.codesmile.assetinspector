@@ -125,7 +125,7 @@ namespace CodeSmile.Editor
 
 		private void OnOpenFileClicked() => GetAssetFromSelection()?.OpenExternal();
 
-		private void OnOpenFolderClicked() => GetAssetFromSelection()?.AssetPath?.OpenFolder();
+		private void OnOpenFolderClicked() => GetAssetFromSelection()?.AssetPath?.OpenExternal();
 
 		private void OnSelectionChanged() => UpdateGui();
 
