@@ -1,52 +1,44 @@
-# CodeSmile ???
+# CodeSmile Asset Inspector
 
-What is it?
+Inspect all AssetDatabase details of selected assets. Great for researching and debugging!
 
-## Quick Introduction
+![Asset Inspector](./Media~/AssetInspectorScreenshot.png)
 
-How to use it ??
+The Asset Inspector GUI was created with UI Toolkit's UI Builder.
 
-# Why the GPL 3.0 license?
+## Documentation
 
-This software solely provides code used within the Unity editor application.
-It is therefore not being built into executables (known as 'builds') created
-by the Unity editor application.
+None yet. It's self-explanatory. Be sure to check the tooltips.
 
-Thus, by merely using this software in your Unity project, the GPL license
-does not affect or alter your right to distribute 'builds' of your project.
-You do NOT have to publish your entire Unity project (source) itself under the
-GPL license.
+## Requirements
 
-HOWEVER, it does require that any editor code (scripts) that use this software
-be released under the GPL license but ONLY if you distribute said editor code.
+- Unity 2021.3.3f1 or newer
+- [CodeSmile AssetDatabase package](https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetdatabase) 
+- A smile :)
 
-Sharing the Unity project within your team / company is not distributing!
-BUT if you were to create an editor tool that uses this software, and you were
-to distribute that editor tool, you would have to distribute your editor tool
-under the same GPL 3.0 license.
+## Installation
 
-In essence, my motivation is this:
+This software is a Unity Package Manager 'npm package'.
 
-- I want to share my work, for free, in source form, to everyone's benefit.
-- I want to discourage commercial editor tool developers from basing their
-  work on this software for the simple reason that I may do so myself.
-  (You cannot publish assets containing GPL licensed software on the Unity
-  Asset Store. You can charge clients for any work you do with this software.)
-- I want to encourage commercial software developers to obtain a more
-  permissive license for this software, for example by purchasing rights to
-  this software either via the Unity Asset Store or directly from me.
-  This encouragement is mainly because the separation of editor vs runtime
-  scripts can be somewhat fluid, and companies ought to to err on the safe
-  side. Given how much work (aka 'money') this software can safe even a small
-  team it is certainly worth to invest in it.
+- Open Window => Package Manager in Unity Editor
+- Choose "Install package from git URL..."
+- Install the following packages in this order:
+- `https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetdatabase`
+- `https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetinspector`
 
-I sincerely hope you understand my reasons for applying the GPL 3.0 license.
+This package is currently not available on OpenUPM.
 
-Please contact me if you wish to license the software under different terms,
-no matter your intention. Generally feel free to contact me if you have any
-questions or feedback.
+## GPL License
 
-Thanks for your time and understanding!
+This software is licensed under the GNU General Public License v3.0 (GPL 3.0). The main implication is that any work you publish that uses this software requires the entire work to be published as open source software under the same GPL 3.0 license.
+
+This software will also be available on the Unity Asset Store under the Asset Store EULA.
+
+If you wish to license this software under different terms, for example to create Asset Store tools, please contact me!
 
 - Steffen aka CodeSmile
 - [Email](mailto:steffen@steffenitterheim.de) / [Discord](https://discord.gg/JN3Jz8qkeV)
+
+## Support & Feeback
+
+Very welcome! Please prefer to create an issue in the GitHub repository, specifically if you encounter issues or to request a feature. Contact me directly (see above) for any other feedback and questions.
