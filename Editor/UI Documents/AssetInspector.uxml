@@ -70,12 +70,12 @@
         <ui:ListView name="AllSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="All Sub Assets" tooltip="Lists all sub-assets of the asset, including those that have no visible representation in the Project window. This may not always include the main asset, for example folders and scenes do not appear in their sub-asset list." style="margin-left: 3px;" />
         <ui:ListView name="VisibleSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Visible Sub Assets" tooltip="Lists all sub-assets that the Project window will also show. Note that an asset can have more sub-assets than are visible in the Project window. The main asset is not included in this list." style="margin-left: 3px;" />
         <ui:ListView name="AssetDirectDependencies" focusable="false" show-foldout-header="true" header-title="Direct Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" tooltip="Lists all direct dependencies of the asset." style="margin-left: 3px;" />
-        <ui:ListView name="AssetAllDependencies" focusable="false" show-foldout-header="true" header-title="All Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" style="margin-left: 3px;" />
-        <ui:ListView name="AssetLabels" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Labels" style="margin-left: 3px;" />
+        <ui:ListView name="AssetAllDependencies" focusable="false" show-foldout-header="true" header-title="All Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" tooltip="Lists all (recursive) dependencies of the asset. Typically includes the asset itself too." style="margin-left: 3px;" />
+        <ui:ListView name="AssetLabels" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Labels" tooltip="Lists all the labels assigned to the asset." style="margin-left: 3px;" />
         <ui:Foldout text="Icon Details" name="AssetIconDetails">
-            <ui:TextField label="Icon" name="AssetIcon" />
-            <ui:TextField label="Icon Path" name="AssetIconPath" />
-            <ui:Foldout text="Image" name="IconImage" style="flex-grow: 1;">
+            <ui:TextField label="Icon" name="AssetIcon" tooltip="Name of the icon image and its dimensions." />
+            <ui:TextField label="Icon Path" name="AssetIconPath" tooltip="Relative path to the icon file." />
+            <ui:Foldout text="Image" name="IconImage" tooltip="The icon image at 100% scale." style="flex-grow: 1;">
                 <ui:VisualElement name="AssetIconImage" style="flex-grow: 1; max-width: 512px; max-height: 512px; width: auto; height: auto; flex-direction: column; flex-wrap: nowrap; min-width: 16px; min-height: 16px;" />
             </ui:Foldout>
         </ui:Foldout>
