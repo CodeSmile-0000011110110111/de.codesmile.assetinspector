@@ -2,6 +2,7 @@
     <Style src="project://database/Packages/de.codesmile.editor.assetinspector/Editor/UI%20Documents/AssetInspector.uss?fileID=7433441132597879392&amp;guid=a4d5a907f0bfa7946ad8381e69965a30&amp;type=3#AssetInspector" />
     <ui:ScrollView>
         <ui:TextField label="Name" name="AssetName" readonly="true" tooltip="The asset&apos;s name. Typically the same as the filename without extension." />
+        <uie:ObjectField label="Main Asset" name="AssetMainObject" tooltip="For sub assets shows the asset&apos;s main asset. In all other cases it&apos;s the selected asset." />
         <ui:Foldout text="Type Details" name="AssetTypeDetails">
             <ui:TextField label="Type" name="AssetType" focusable="true" readonly="true" tooltip="The System.Type of the asset object." />
             <ui:TextField label="Namespace" name="AssetNamespace" focusable="true" readonly="true" tooltip="The asset type&apos;s namespace." />
@@ -9,66 +10,66 @@
             <ui:ListView header-title="Base Classes" name="AssetInheritsFrom" show-foldout-header="true" allow-add="false" allow-remove="false" fixed-item-height="17" focusable="false" tooltip="Lists all base classes (if any) of the asset type in descending order." style="flex-grow: 1;" />
         </ui:Foldout>
         <ui:Foldout text="File Details" name="AssetFileDetails">
-            <ui:TextField label="File" readonly="true" name="AssetFile" tooltip="The asset&apos;s file name with extension">
+            <ui:TextField label="File" readonly="true" name="AssetFile" tooltip="The asset&apos;s file name and extension.">
                 <ui:Button text="Open" tooltip="Opens this file in the associated external application. Does nothing if no application is associated with the file extension." style="font-size: 10px;" />
             </ui:TextField>
-            <ui:TextField label="Folder" readonly="true" name="AssetFolder" tooltip="The relative path of the folder the file is contained in.">
+            <ui:TextField label="Folder" readonly="true" name="AssetFolder" tooltip="The relative path to the asset file&apos;s folder. For folder assets it&apos;s the parent folder.">
                 <ui:Button text="Open" tooltip="Opens the folder in the associated folder browser (eg File Explorer, Finder)." style="font-size: 10px;" />
             </ui:TextField>
-            <ui:TextField label="Relative Path" name="AssetPath" readonly="true" tooltip="The complete relative path to the asset file." />
+            <ui:TextField label="Relative Path" name="AssetPath" readonly="true" tooltip="The relative path to the asset file." />
             <ui:TextField label="Full Path" name="AssetFullPath" readonly="true" tooltip="The full path to the asset file." />
-            <ui:TextField label="Meta Path" name="AssetMetaPath" readonly="true" tooltip="The complete relative path to the asset&apos;s meta file." />
-            <ui:TextField label="Full Meta Path" name="AssetMetaFullPath" readonly="true" tooltip="The full path to the asset file." />
+            <ui:TextField label="Meta Path" name="AssetMetaPath" readonly="true" tooltip="The relative path to the asset&apos;s meta file." />
+            <ui:TextField label="Full Meta Path" name="AssetMetaFullPath" readonly="true" tooltip="The full path to the asset&apos;s meta file." />
         </ui:Foldout>
         <ui:Foldout text="Identity" name="AssetIdentity">
-            <ui:TextField label="GUID" name="AssetGuid" readonly="true" tooltip="The globally unique identifier (GUID) of the asset. This value never changes. If you notice GUID changes in source control it means someone created an asset file but did not commit the corresponding .meta file in the initial commit!" />
-            <ui:TextField label="Local File ID" name="AssetLocalFileId" readonly="true" />
-            <ui:TextField label="Instance ID" name="AssetInstanceId" readonly="true" />
+            <ui:TextField label="GUID" name="AssetGuid" readonly="true" tooltip="The globally unique identifier (GUID) of the asset. The GUID of an asset never changes. TIP: If you notice GUID changing in .meta files under source control it means someone created an asset file and committed it, but did not commit the corresponding .meta file in the initial commit! Therefore every machine creates its own unique GUID for that particular asset, conflicting with other clone project&apos;s GUID for that asset. This leads to &apos;Missing References&apos; in the Inspector which seem to occur at random and when fixed, appear elsewhere or happen again at a later time." />
+            <ui:TextField label="Local File ID" name="AssetLocalFileId" readonly="true" tooltip="An Int64 (long) value that uniquely identifies an asset within the asset file. For globally unique identifier see GUID." />
+            <ui:TextField label="Instance ID" name="AssetInstanceId" readonly="true" tooltip="The globally unique ID for instances of an Object. It is never 0. The value can only be used to identify an object within the current session, as it changes when restarting the editor or build. The sign of the value does NOT reliably infer whether the object is a file or an in-memory instance." />
         </ui:Foldout>
         <ui:Foldout text="Importer" name="AssetImporterDetails">
-            <ui:TextField label="Default Importer" name="AssetDefaultImporter" focusable="true" readonly="true" tooltip="The default AssetImporter type for this asset type." />
-            <ui:TextField label="Active Importer" name="AssetActiveImporter" focusable="true" readonly="true" tooltip="The active AssetImporter type for this asset type." />
-            <ui:Toggle label="IsOverridden" name="AssetImporterIsOverridden" tooltip="Shows whether the AssetImporter is overridden (not the default) for this asset." />
-            <ui:ListView header-title="Available Importers" name="AssetAvailableImporters" show-foldout-header="true" allow-add="false" allow-remove="false" fixed-item-height="17" focusable="false" tooltip="Lists all available importers for this asset type." style="flex-grow: 1;" />
+            <ui:TextField label="Default Importer" name="AssetDefaultImporter" focusable="true" readonly="true" tooltip="The default AssetImporter type for assets of this type." />
+            <ui:TextField label="Active Importer" name="AssetActiveImporter" focusable="true" readonly="true" tooltip="The active AssetImporter type for assets of this type. Is only different than Default Importer when an editor script changes (overrides) a the importer for particular asset types." />
+            <ui:Toggle label="IsOverridden" name="AssetImporterIsOverridden" tooltip="Shows whether the AssetImporter is overridden. This is only true when Active Importer does not equal Default Importer." />
+            <ui:ListView header-title="Available Importers" name="AssetAvailableImporters" show-foldout-header="true" allow-add="false" allow-remove="false" fixed-item-height="17" focusable="false" tooltip="Lists all available importers in the project that can handle assets of this type. Typically additional importers are user-created custom importers deriving from AssetImporter or ScriptedImporter." style="flex-grow: 1;" />
         </ui:Foldout>
         <ui:Foldout text="Bundle" name="AssetBundleDetails">
-            <ui:TextField label="Owning Bundle" name="AssetOwningBundle" focusable="true" readonly="true" tooltip="Shows the Asset Bundle name that owns this asset." />
-            <ui:TextField label="Owning Bundle Variant" name="AssetOwningBundleVariant" focusable="true" readonly="true" tooltip="Shows the Asset Bundle variant name that owns this asset." />
+            <ui:TextField label="Owning Bundle" name="AssetOwningBundle" focusable="true" readonly="true" tooltip="Shows the Asset Bundle name that contains this asset. Note: Unity recommends to use Addressables over Asset Bundles." />
+            <ui:TextField label="Owning Bundle Variant" name="AssetOwningBundleVariant" focusable="true" readonly="true" tooltip="Shows the Asset Bundle variant name that contains this asset. Note: Unity recommends to use Addressables over Asset Bundles." />
         </ui:Foldout>
         <ui:Foldout text="Status" name="AssetStatus">
             <ui:GroupBox style="flex-direction: column;">
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
-                    <ui:Toggle label="Imported" name="AssetImported" focusable="false" tooltip="An asset is &apos;imported&apos; if it is contained in the AssetDatabase. Can be false for newly created assets if AssetDatabase auto-refresh is disabled." style="font-size: 11px; -unity-font-style: bold;" />
-                    <ui:Toggle label="Loaded" name="AssetLoaded" focusable="false" tooltip="Tells you if the asset is currently loaded in memory." style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Imported" name="AssetImported" focusable="false" tooltip="An asset is considered &apos;imported&apos; if it is contained in the AssetDatabase. It indicates that loading the asset will succeed - notwithstanding some exceptions where the AssetDatabase generally cannot load assets, such as in static constructors. If this value is false for a newly created asset, it indicates that AssetDatabase auto-refresh is disabled either in Preferences =&gt; Asset Pipeline or due to a faulty editor script that left the AssetDatabase in &apos;paused&apos; state." style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Loaded" name="AssetLoaded" focusable="false" tooltip="Is true if the asset is currently loaded into memory as a UnityEngine.Object derived instance. NOTE: This is always true in the Asset Inspector since inspecting (selecting) an asset will automatically load it into memory." style="font-size: 11px; -unity-font-style: bold;" />
                 </ui:VisualElement>
-                <ui:VisualElement style="flex-grow: 1; justify-content: space-between; flex-direction: row;">
-                    <ui:Toggle label="MainAsset" name="MainAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold; min-width: auto; min-height: auto;" />
+                <ui:VisualElement tooltip="Is true if the selection is a sub-asset. Selectable sub assets in the editor are also considered &apos;visible representations&apos;. Note that an asset can contain more sub-assets than you can view and select in the Project window." style="flex-grow: 1; justify-content: space-between; flex-direction: row;">
+                    <ui:Toggle label="MainAsset" name="MainAsset" focusable="false" tooltip="Is true if the selection is the main asset. False if it is a sub-asset." style="font-size: 11px; -unity-font-style: bold; min-width: auto; min-height: auto;" />
                     <ui:Toggle label="SubAsset" name="SubAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold; min-height: auto; min-width: auto;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; min-width: auto; min-height: auto;">
-                    <ui:Toggle label="NativeAsset" name="NativeAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
-                    <ui:Toggle label="ForeignAsset" name="ForeignAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="NativeAsset" name="NativeAsset" focusable="false" tooltip="Is true for assets that the Unity Editor natively serializes, eg they were created within the editor. For example: Animator Controller, Material. There are notable exceptions however, mainly scene assets but also UI Builder documents." style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="ForeignAsset" name="ForeignAsset" focusable="false" tooltip="Is true for assets that are &apos;foreign serialized&apos; meaning they are created with other applications. For example: meshes, images, audio files, scripts." style="font-size: 11px; -unity-font-style: bold;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; min-width: auto; min-height: auto;">
-                    <ui:Toggle label="SceneAsset" name="IsSceneAsset" focusable="false" style="font-size: 11px; -unity-font-style: bold;" />
-                    <ui:Toggle label="Can open in Editor?" name="CanOpenAsset" focusable="false" tooltip="Is true if the Unity Editor can open (edit) files of this type." style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="SceneAsset" name="IsSceneAsset" focusable="false" tooltip="Is true if a scene is selected. This check exists mainly because trying to load a SceneAsset like a regular asset with the AssetDatabase load methods fails and prints errors in the console." style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Can open in Editor?" name="CanOpenAsset" focusable="false" tooltip="Is true if the Unity Editor can open (edit) files of this type. This is mostly true for &apos;native&apos; asset types, and false for the &apos;foreign&apos; ones. Again exceptions exist, such as SceneAsset types that are considered &apos;foreign&apos; yet the editor can open scenes." style="font-size: 11px; -unity-font-style: bold;" />
                 </ui:VisualElement>
             </ui:GroupBox>
         </ui:Foldout>
         <ui:Foldout text="Version Control" name="AssetVersionControl">
             <ui:GroupBox style="flex-direction: column;">
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
-                    <ui:Toggle label="IsEditable" name="AssetIsEditable" focusable="false" tooltip="Is this asset file editable (&apos;open for edit&apos;) in version control?" style="font-size: 11px; -unity-font-style: bold;" />
-                    <ui:Toggle label="IsMetaEditable" name="AssetIsMetaEditable" focusable="false" tooltip="Is this asset&apos;s meta file editable (&apos;open for edit&apos;) in version control?" style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="IsEditable" name="AssetIsEditable" focusable="false" tooltip="Is this asset file editable (&apos;opened for edit&apos;) in version control?" style="font-size: 11px; -unity-font-style: bold;" />
+                    <ui:Toggle label="IsMetaEditable" name="AssetIsMetaEditable" focusable="false" tooltip="Is this asset&apos;s meta file editable (&apos;opened for edit&apos;) in version control?" style="font-size: 11px; -unity-font-style: bold;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 1; justify-content: space-between; flex-direction: row;">
                     <ui:Toggle label="CanMakeEditable" name="AssetCanMakeEditable" focusable="false" tooltip="Can this asset be made editable (&apos;open for edit&apos;) in version control?" style="font-size: 11px; -unity-font-style: bold; min-width: auto; min-height: auto;" />
                 </ui:VisualElement>
             </ui:GroupBox>
         </ui:Foldout>
-        <ui:ListView name="AllSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="All Sub Assets" style="margin-left: 3px;" />
-        <ui:ListView name="VisibleSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Visible Sub Assets" style="margin-left: 3px;" />
-        <ui:ListView name="AssetDirectDependencies" focusable="false" show-foldout-header="true" header-title="Direct Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" style="margin-left: 3px;" />
+        <ui:ListView name="AllSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="All Sub Assets" tooltip="Lists all sub-assets of the asset, including those that have no visible representation in the Project window. This may not always include the main asset, for example folders and scenes do not appear in their sub-asset list." style="margin-left: 3px;" />
+        <ui:ListView name="VisibleSubAssets" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Visible Sub Assets" tooltip="Lists all sub-assets that the Project window will also show. Note that an asset can have more sub-assets than are visible in the Project window." style="margin-left: 3px;" />
+        <ui:ListView name="AssetDirectDependencies" focusable="false" show-foldout-header="true" header-title="Direct Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" tooltip="Lists all direct dependencies of the asset." style="margin-left: 3px;" />
         <ui:ListView name="AssetAllDependencies" focusable="false" show-foldout-header="true" header-title="All Dependencies" allow-add="false" allow-remove="false" fixed-item-height="17" style="margin-left: 3px;" />
         <ui:ListView name="AssetLabels" fixed-item-height="17" focusable="false" show-foldout-header="true" allow-add="false" allow-remove="false" header-title="Labels" style="margin-left: 3px;" />
         <ui:Foldout text="Icon Details" name="AssetIconDetails">

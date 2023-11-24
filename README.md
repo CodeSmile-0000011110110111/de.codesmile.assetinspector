@@ -1,6 +1,6 @@
 # CodeSmile Asset Inspector
 
-Inspect all AssetDatabase details of selected assets. Great for researching and debugging!
+Inspect all AssetDatabase details of selected assets. Great for researching and debugging! Also serves as a demo for [`CodeSmile AssetDatabase`](https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetdatabase).
 
 ![Asset Inspector](./Media~/AssetInspectorScreenshot.png)
 
@@ -13,7 +13,7 @@ None yet. It's self-explanatory. Be sure to check the tooltips.
 ## Requirements
 
 - Unity 2021.3.3f1 or newer
-- [CodeSmile AssetDatabase package](https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetdatabase) 
+- [`CodeSmile AssetDatabase`](https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetdatabase)
 - A smile :)
 
 ## Installation
@@ -22,9 +22,9 @@ This software is a Unity Package Manager 'npm package'.
 
 - Open Window => Package Manager in Unity Editor
 - Choose "Install package from git URL..."
-- Install the following packages in this order:
-- `https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetdatabase`
-- `https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetinspector`
+- Enter: `https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetdatabase`
+- Choose "Install package from git URL..." again
+- Enter: `https://github.com/CodeSmile-0000011110110111/de.codesmile.editor.assetinspector`
 
 This package is currently not available on OpenUPM.
 

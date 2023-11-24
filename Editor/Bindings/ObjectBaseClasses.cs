@@ -8,15 +8,15 @@ using Object = System.Object;
 
 namespace CodeSmile.Editor.Bindings
 {
-	internal class AssetTypeBaseClasses : ScriptableObject
+	internal class ObjectBaseClasses : ScriptableObject
 	{
 		public List<String> BaseClasses;
 
-		public AssetTypeBaseClasses Init(Asset asset)
+		public ObjectBaseClasses Init(UnityEngine.Object obj)
 		{
 			BaseClasses = new List<String>();
-			if (asset != null && asset.MainObjectType != null)
-				AddBaseClassRecursive(asset.MainObjectType);
+			if (obj != null)
+				AddBaseClassRecursive(obj.GetType());
 
 			return this;
 		}

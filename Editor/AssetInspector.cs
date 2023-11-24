@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace CodeSmile.Editor
 {
@@ -16,7 +17,7 @@ namespace CodeSmile.Editor
 
 		private VisualElement m_Document;
 
-		private AssetTypeBaseClasses m_BaseClasses;
+		private ObjectBaseClasses m_BaseClasses;
 		private AssetLabels m_Labels;
 		private AssetDependencies m_Dependencies;
 		private AssetSubObjects m_SubObjects;
@@ -34,11 +35,18 @@ namespace CodeSmile.Editor
 		{
 			Asset asset = null;
 
-			var active = Selection.activeObject;
-			if (Asset.Status.IsImported(active))
-				asset = new Asset(active);
+			var selectedObject = Selection.activeObject;
+			if (Asset.Status.IsImported(selectedObject))
+				asset = new Asset(selectedObject);
 
 			return asset;
+		}
+
+		private static void HideObjectFieldSelector(ObjectField field)
+		{
+			var selector = field.Q<VisualElement>(className: "unity-object-field__selector");
+			selector.visible = false;
+			selector.SetEnabled(false);
 		}
 
 		public void CreateGUI()
@@ -61,22 +69,23 @@ namespace CodeSmile.Editor
 		private void UpdateGui()
 		{
 			var asset = GetAssetFromSelection();
+			var selection = Selection.activeObject;
 
-			UpdateName(asset);
-			UpdateTypeDetails(asset);
-			UpdateFileDetails(asset);
-			UpdateIdentity(asset);
+			UpdateAssetDetails(asset, selection);
+			UpdateTypeDetails(asset, selection);
+			UpdateFileDetails(asset, selection);
+			UpdateIdentity(asset, selection);
 			UpdateImporterDetails(asset);
 			UpdateBundleDetails(asset);
-			UpdateStatus(asset);
-			UpdateVersionControlStatus(asset);
+			UpdateStatus(asset,selection);
+			UpdateVersionControlStatus(asset, selection);
 
 			UpdateAllSubAssets(asset);
 			UpdateVisibleSubAssets(asset);
 			UpdateLabels(asset);
 			UpdateDependencies(asset);
 
-			UpdateIconDetails(asset);
+			UpdateIconDetails(asset, selection);
 		}
 
 		private void RegisterEvents(Boolean register)
@@ -120,40 +129,47 @@ namespace CodeSmile.Editor
 
 		private void OnSelectionChanged() => UpdateGui();
 
-		private void UpdateName(Asset asset) => Find<TextField>("AssetName").value =
-			asset != null ? asset.MainObject.name : "<no selection>";
-
-		private void UpdateTypeDetails(Asset asset)
+		private void UpdateAssetDetails(Asset asset, Object selection)
 		{
-			Find<TextField>("AssetType").value = asset != null ? Asset.GetMainType(asset.AssetPath).Name : String.Empty;
-			Find<TextField>("AssetNamespace").value =
-				asset != null ? Asset.GetMainType(asset.AssetPath).Namespace : String.Empty;
-			Find<TextField>("AssetAssemblyQualifiedName").value = asset != null
-				? Asset.GetMainType(asset.AssetPath).AssemblyQualifiedName
-				: String.Empty;
+			Find<TextField>("AssetName").value = selection != null ? selection.name : "<no selection>";
 
-			m_BaseClasses = CreateInstance<AssetTypeBaseClasses>().Init(asset);
+			var mainObject = Find<ObjectField>("AssetMainObject");
+			mainObject.value = asset?.MainObject;
+			HideObjectFieldSelector(mainObject);
+		}
+
+		private void UpdateTypeDetails(Asset asset, Object selection)
+		{
+			Find<TextField>("AssetType").value = selection != null ? selection.GetType().Name : String.Empty;
+			Find<TextField>("AssetNamespace").value = selection != null ? selection.GetType().Namespace : String.Empty;
+			Find<TextField>("AssetAssemblyQualifiedName").value =
+				selection != null ? selection.GetType().AssemblyQualifiedName : String.Empty;
+
+			m_BaseClasses = CreateInstance<ObjectBaseClasses>().Init(selection);
 			var list = Find<ListView>("AssetInheritsFrom");
 			list.bindingPath = nameof(m_BaseClasses.BaseClasses);
 			list.Bind(new SerializedObject(m_BaseClasses));
 		}
 
-		private void UpdateFileDetails(Asset asset)
+		private void UpdateFileDetails(Asset asset, Object selection)
 		{
-			Find<TextField>("AssetFile").value = asset != null ? asset.AssetPath.FileName : String.Empty;
-			Find<TextField>("AssetFolder").value = asset != null ? asset.AssetPath.FolderPath : String.Empty;
-			Find<TextField>("AssetPath").value = asset != null ? asset.AssetPath : String.Empty;
-			Find<TextField>("AssetFullPath").value = asset != null ? asset.AssetPath.FullPath : String.Empty;
-			Find<TextField>("AssetMetaPath").value = asset != null ? asset.MetaPath : String.Empty;
-			Find<TextField>("AssetMetaFullPath").value = asset != null ? asset.MetaPath.FullPath : String.Empty;
+			var selectionPath = Asset.Path.Get(selection);
+			Find<TextField>("AssetFile").value = selectionPath?.FileName;
+			Find<TextField>("AssetFolder").value = selectionPath?.FolderPath;
+			Find<TextField>("AssetPath").value = selectionPath?.AssetPath;
+			Find<TextField>("AssetFullPath").value = selectionPath?.FullPath;
+			Find<TextField>("AssetMetaPath").value = selectionPath?.MetaPath;
+			Find<TextField>("AssetMetaFullPath").value = selectionPath?.MetaPath.FullPath;
 		}
 
-		private void UpdateIdentity(Asset asset)
+		private void UpdateIdentity(Asset asset, Object selection)
 		{
-			Find<TextField>("AssetGuid").value = asset != null ? asset.Guid.ToString() : String.Empty;
-			Find<TextField>("AssetInstanceId").value =
-				asset != null ? asset.MainObject.GetInstanceID().ToString() : String.Empty;
-			Find<TextField>("AssetLocalFileId").value = asset != null ? asset.LocalFileId.ToString() : String.Empty;
+			var (guid, fileId) = Asset.GetGuidAndFileId(selection);
+			var instanceId = selection != null ? selection.GetInstanceID() : 0;
+
+			Find<TextField>("AssetGuid").value = guid.Empty() == false ? guid.ToString() : String.Empty;
+			Find<TextField>("AssetLocalFileId").value = fileId != 0L ? fileId.ToString() : String.Empty;
+			Find<TextField>("AssetInstanceId").value = instanceId != 0 ? instanceId.ToString() : String.Empty;
 		}
 
 		private void UpdateImporterDetails(Asset asset)
@@ -161,7 +177,8 @@ namespace CodeSmile.Editor
 #if UNITY_2022_2_OR_NEWER
 			Find<TextField>("AssetDefaultImporter").value =
 				asset != null ? asset.DefaultImporter?.FullName : String.Empty;
-			Find<TextField>("AssetActiveImporter").value = asset != null ? asset.ActiveImporter?.FullName : String.Empty;
+			Find<TextField>("AssetActiveImporter").value =
+				asset != null ? asset.ActiveImporter?.FullName : String.Empty;
 			Find<Toggle>("AssetImporterIsOverridden").value = asset != null ? asset.IsImporterOverridden : false;
 #endif
 
@@ -178,28 +195,28 @@ namespace CodeSmile.Editor
 				asset != null ? asset.OwningBundleVariant : String.Empty;
 		}
 
-		private void UpdateStatus(Asset asset)
+		private void UpdateStatus(Asset asset, Object selection)
 		{
 			var group = Find<Foldout>("AssetStatus");
-			Find<Toggle>("AssetImported", group).value = asset != null ? Asset.Status.IsImported(asset) : false;
-			Find<Toggle>("AssetLoaded", group).value = asset != null ? Asset.Status.IsLoaded(asset) : false;
-			Find<Toggle>("MainAsset", group).value = asset != null ? Asset.Status.IsMain(asset) : false;
-			Find<Toggle>("SubAsset", group).value = asset != null ? Asset.Status.IsSub(asset) : false;
-			Find<Toggle>("NativeAsset", group).value = asset != null ? Asset.Status.IsNative(asset) : false;
-			Find<Toggle>("ForeignAsset", group).value = asset != null ? Asset.Status.IsForeign(asset) : false;
-			Find<Toggle>("CanOpenAsset", group).value = asset != null ? asset.CanOpenInEditor() : false;
-			Find<Toggle>("IsSceneAsset", group).value = asset != null ? asset.IsScene : false;
+			Find<Toggle>("AssetImported", group).value = selection != null ? Asset.Status.IsImported(selection) : false;
+			Find<Toggle>("AssetLoaded", group).value = selection != null ? Asset.Status.IsLoaded(selection) : false;
+			Find<Toggle>("MainAsset", group).value = selection != null ? Asset.Status.IsMain(selection) : false;
+			Find<Toggle>("SubAsset", group).value = selection != null ? Asset.Status.IsSub(selection) : false;
+			Find<Toggle>("NativeAsset", group).value = selection != null ? Asset.Status.IsNative(selection) : false;
+			Find<Toggle>("ForeignAsset", group).value = selection != null ? Asset.Status.IsForeign(selection) : false;
+			Find<Toggle>("CanOpenAsset", group).value = selection != null ? Asset.File.CanOpenInEditor(selection) : false;
+			Find<Toggle>("IsSceneAsset", group).value = selection != null ? Asset.Status.IsScene(selection) : false;
 		}
 
-		private void UpdateVersionControlStatus(Asset asset)
+		private void UpdateVersionControlStatus(Asset asset, Object selection)
 		{
 			var group = Find<Foldout>("AssetVersionControlStatus");
 			Find<Toggle>("AssetIsEditable", group).value =
-				asset != null ? Asset.VersionControl.IsEditable(asset) : false;
+				selection != null ? Asset.VersionControl.IsEditable(selection) : false;
 			Find<Toggle>("AssetIsMetaEditable", group).value =
-				asset != null ? Asset.VersionControl.IsMetaEditable(asset) : false;
+				selection != null ? Asset.VersionControl.IsMetaEditable(selection) : false;
 			Find<Toggle>("AssetCanMakeEditable", group).value =
-				asset != null ? Asset.VersionControl.CanMakeEditable(asset) : false;
+				selection != null ? Asset.VersionControl.CanMakeEditable(selection) : false;
 		}
 
 		private void UpdateAllSubAssets(Asset asset)
@@ -245,17 +262,14 @@ namespace CodeSmile.Editor
 			}
 		}
 
-		private void UpdateIconDetails(Asset asset)
+		private void UpdateIconDetails(Asset asset, Object selection)
 		{
-			var assetIconName = asset != null && asset.Icon != null
-				? $"{asset.Icon.name} ({asset.Icon.width}x{asset.Icon.height})"
-				: String.Empty;
-			Find<TextField>("AssetIcon").value = assetIconName;
-			Find<TextField>("AssetIconPath").value =
-				asset != null && asset.Icon != null ? $"{Asset.Path.Get(asset.Icon)}" : String.Empty;
+			var icon = Asset.GetIcon(selection);
+			Find<TextField>("AssetIcon").value = icon != null ? $"{icon.name} ({icon.width}x{icon.height})" : String.Empty;;
+			Find<TextField>("AssetIconPath").value = icon != null ? $"{Asset.Path.Get(icon)}" : String.Empty;
 
 			var image = Find<VisualElement>("AssetIconImage");
-			if (asset != null && asset.Icon is Texture2D texture)
+			if (icon != null && icon is Texture2D texture)
 			{
 				image.style.backgroundImage = new StyleBackground(texture);
 				image.style.width = new StyleLength(texture.width);
@@ -282,15 +296,12 @@ namespace CodeSmile.Editor
 		private Func<VisualElement> MakeListViewObjectItem() => () =>
 		{
 			var field = new ObjectField();
-			var selector = field.Q<VisualElement>(className: "unity-object-field__selector");
-			selector.visible = false;
-			selector.SetEnabled(false);
+			HideObjectFieldSelector(field);
 
 			field.style.fontSize = 12f;
 			field.style.flexShrink = new StyleFloat(StyleKeyword.Auto);
 			field.style.paddingLeft = new StyleLength(14f);
 			field.focusable = false;
-			//field.SetEnabled(false);
 			return field;
 		};
 
