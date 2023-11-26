@@ -269,11 +269,11 @@ namespace CodeSmile.Editor
 			Find<TextField>("AssetIconPath").value = icon != null ? $"{Asset.Path.Get(icon)}" : String.Empty;
 
 			var image = Find<VisualElement>("AssetIconImage");
-			if (icon != null && icon is Texture2D texture)
+			if (icon != null)
 			{
-				image.style.backgroundImage = new StyleBackground(texture);
-				image.style.width = new StyleLength(texture.width);
-				image.style.height = new StyleLength(texture.height);
+				image.style.backgroundImage = new StyleBackground(icon);
+				image.style.width = new StyleLength(icon.width);
+				image.style.height = new StyleLength(icon.height);
 			}
 			else
 			{
