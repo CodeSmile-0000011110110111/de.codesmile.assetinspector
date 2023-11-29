@@ -199,7 +199,7 @@ namespace CodeSmile.Editor
 		{
 			var group = Find<Foldout>("AssetStatus");
 			Find<Toggle>("AssetImported", group).value = selection != null ? Asset.Status.IsImported(selection) : false;
-			Find<Toggle>("AssetLoaded", group).value = selection != null ? Asset.Status.IsLoaded(selection) : false;
+			Find<Toggle>("AssetLoaded", group).value = selection != null ? Asset.Status.IsLoaded(Asset.Path.Get(selection)) : false;
 			Find<Toggle>("MainAsset", group).value = selection != null ? Asset.Status.IsMain(selection) : false;
 			Find<Toggle>("SubAsset", group).value = selection != null ? Asset.Status.IsSub(selection) : false;
 			Find<Toggle>("NativeAsset", group).value = selection != null ? Asset.Status.IsNative(selection) : false;
