@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = System.Object;
 
-namespace CodeSmile.Editor.Bindings
+namespace CodeSmileEditor.Bindings
 {
 	internal class ObjectBaseClasses : ScriptableObject
 	{

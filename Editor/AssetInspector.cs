@@ -1,7 +1,7 @@
 // Copyright (C) 2021-2023 Steffen Itterheim
 // Refer to included LICENSE file for terms and conditions.
 
-using CodeSmile.Editor.Bindings;
+using CodeSmileEditor.Bindings;
 using System;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-namespace CodeSmile.Editor
+namespace CodeSmileEditor
 {
 	public class AssetInspector : EditorWindow
 	{

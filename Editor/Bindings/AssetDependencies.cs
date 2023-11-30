@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace CodeSmile.Editor.Bindings
+namespace CodeSmileEditor.Bindings
 {
 	internal class AssetDependencies : ScriptableObject
 	{

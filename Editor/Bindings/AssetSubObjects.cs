@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace CodeSmile.Editor.Bindings
+namespace CodeSmileEditor.Bindings
 {
 	internal class AssetSubObjects : ScriptableObject
 	{

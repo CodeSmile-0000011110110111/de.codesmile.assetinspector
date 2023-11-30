@@ -1,9 +1,10 @@
 {
-    "name": "CodeSmile.Editor.AssetInspector",
-    "rootNamespace": "CodeSmile.Editor",
+    "name": "CodeSmileEditor.AssetInspector",
+    "rootNamespace": "CodeSmileEditor",
     "references": [
         "GUID:343deaaf83e0cee4ca978e7df0b80d21",
-        "GUID:38cc5939e6694a64d8d6ea3aaca03495"
+        "GUID:38cc5939e6694a64d8d6ea3aaca03495",
+        "GUID:0acc523941302664db1f4e527237feb3"
     ],
     "includePlatforms": [
         "Editor"

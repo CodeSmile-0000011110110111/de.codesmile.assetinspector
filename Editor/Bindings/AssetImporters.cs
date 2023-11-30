@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CodeSmile.Editor.Bindings
+namespace CodeSmileEditor.Bindings
 {
 	internal class AssetImporters : ScriptableObject
 	{
