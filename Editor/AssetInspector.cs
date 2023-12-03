@@ -159,7 +159,8 @@ namespace CodeSmileEditor
 			Find<TextField>("AssetPath").value = selectionPath?.AssetPath;
 			Find<TextField>("AssetFullPath").value = selectionPath?.FullPath;
 			Find<TextField>("AssetMetaPath").value = selectionPath?.MetaPath;
-			Find<TextField>("AssetMetaFullPath").value = selectionPath?.MetaPath.FullPath;
+			if (selectionPath?.Equals("Assets") == false) // "Assets" has no .meta
+				Find<TextField>("AssetMetaFullPath").value = selectionPath?.MetaPath.FullPath;
 		}
 
 		private void UpdateIdentity(Asset asset, Object selection)
