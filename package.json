@@ -1,5 +1,5 @@
 {
-  "name": "de.codesmile.editor.assetinspector",
+  "name": "de.codesmile.assetinspector",
   "displayName": "CodeSmile Asset Inspector",
   "description": "Provides detailed information about a selected asset file.",
   "version": "1.2.8",
@@ -10,11 +10,11 @@
     "email": "steffen@steffenitterheim.de",
     "url": "https://codesmile.de"
   },
-  "changelogUrl": "https://codesmile.de",
-  "documentationUrl": "https://codesmile.de",
-  "licensesUrl": "https://codesmile.de",
+  "changelogUrl": "https://github.com/CodeSmile-0000011110110111/de.codesmile.assetinspector/blob/main/CHANGELOG.md",
+  "documentationUrl": "https://github.com/CodeSmile-0000011110110111/de.codesmile.assetinspector/blob/main/README.md",
+  "licensesUrl": "https://github.com/CodeSmile-0000011110110111/de.codesmile.assetinspector/blob/main/README.md",
   "dependencies": {
-    "de.codesmile.editor.assetdatabase": "1.7.0"
+    "de.codesmile.assetdatabase": "1.7.0"
   },
   "relatedPackages": {}
 }
