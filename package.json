@@ -14,7 +14,7 @@
   "documentationUrl": "https://github.com/CodeSmile-0000011110110111/de.codesmile.assetinspector/blob/main/README.md",
   "licensesUrl": "https://github.com/CodeSmile-0000011110110111/de.codesmile.assetinspector/blob/main/README.md",
   "dependencies": {
-    "de.codesmile.assetdatabase": "1.8.1"
+    "de.codesmile.assetdatabase": "1.8.4"
   },
   "relatedPackages": {}
 }
