@@ -165,7 +165,7 @@ namespace CodeSmileEditor
 
 		private void UpdateIdentity(Asset asset, Object selection)
 		{
-			var (guid, fileId) = Asset.GetGuidAndFileId(selection);
+			var (guid, fileId) = Asset.File.GetGuidAndFileId(selection);
 			var instanceId = selection != null ? selection.GetInstanceID() : 0;
 
 			Find<TextField>("AssetGuid").value = guid.Empty() == false ? guid.ToString() : String.Empty;
