@@ -63,7 +63,8 @@ namespace CodeSmileEditor
 		{
 			Selection.selectionChanged -= OnSelectionChanged;
 
-			RegisterEvents(false);
+			if (m_Document != null)
+				RegisterEvents(false);
 		}
 
 		private void UpdateGui()
@@ -127,7 +128,11 @@ namespace CodeSmileEditor
 
 		private void OnOpenFolderClicked() => GetAssetFromSelection()?.AssetPath?.OpenExternal();
 
-		private void OnSelectionChanged() => UpdateGui();
+		private void OnSelectionChanged()
+		{
+			if (m_Document != null)
+				UpdateGui();
+		}
 
 		private void UpdateAssetDetails(Asset asset, Object selection)
 		{
@@ -211,7 +216,7 @@ namespace CodeSmileEditor
 
 		private void UpdateVersionControlStatus(Asset asset, Object selection)
 		{
-			var group = Find<Foldout>("AssetVersionControlStatus");
+			var group = Find<Foldout>("AssetVersionControl");
 			Find<Toggle>("AssetIsEditable", group).value =
 				selection != null ? Asset.VersionControl.IsEditable(selection) : false;
 			Find<Toggle>("AssetIsMetaEditable", group).value =
@@ -306,7 +311,12 @@ namespace CodeSmileEditor
 			return field;
 		};
 
-		private T Find<T>(String name, VisualElement element = null) where T : VisualElement =>
-			element == null ? m_Document.Q<T>(name) : element.Q<T>(name);
+		private T Find<T>(String name, VisualElement element = null) where T : VisualElement
+		{
+			T found = element == null ? m_Document.Q<T>(name) : element.Q<T>(name);
+			if (found == null)
+				throw new ArgumentException($"not found: '{name}' in {element}/{m_Document}");
+			return found;
+		}
 	}
 }
